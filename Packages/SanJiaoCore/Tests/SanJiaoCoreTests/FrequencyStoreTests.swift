@@ -9,7 +9,7 @@ final class FrequencyStoreTests: XCTestCase {
 
     func testBumpIncrementsCount() throws {
         let url = tmpFile()
-        var store = try FrequencyStore(fileURL: url, flushEvery: 1)
+        let store = try FrequencyStore(fileURL: url, flushEvery: 1)
         store.bump(code: "100301", character: "一")
         store.bump(code: "100301", character: "一")
         XCTAssertEqual(store.count(code: "100301", character: "一"), 2)
@@ -18,7 +18,7 @@ final class FrequencyStoreTests: XCTestCase {
     func testFlushAndReload() throws {
         let url = tmpFile()
         do {
-            var store = try FrequencyStore(fileURL: url, flushEvery: 1)
+            let store = try FrequencyStore(fileURL: url, flushEvery: 1)
             store.bump(code: "100301", character: "一")
             try store.flush()
         }
