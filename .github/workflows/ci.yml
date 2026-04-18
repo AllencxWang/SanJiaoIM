@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.0.app
+      - name: Test SanJiaoCore
+        working-directory: Packages/SanJiaoCore
+        run: swift test
+      - name: Test sanjiao-builder
+        working-directory: Tools/sanjiao-builder
+        run: swift test
+      - name: Build Lexicon.bin
+        run: ./scripts/build-lexicon.sh
+      - name: Install xcodegen
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        run: xcodegen generate
+      - name: Build and unit-test app (best-effort; requires macOS 26 runner)
+        continue-on-error: true
+        run: xcodebuild -project SanJiaoIM.xcodeproj -scheme SanJiaoIM test
