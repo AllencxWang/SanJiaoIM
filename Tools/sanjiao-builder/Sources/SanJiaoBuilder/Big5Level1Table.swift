@@ -1,4 +1,6 @@
 // Auto-generated. Do not edit.
+// Source: Tools/sanjiao-builder/scripts/generate-big5-level1.py
+// Entries: 5421 (Big5-HKSCS superset of classic Big5 level-1 5401)
 enum Big5Level1Table {
     static let values: [UInt32] = [
         0x4E00, 0x4E01, 0x4E03, 0x4E08, 0x4E09, 0x4E0A, 0x4E0B, 0x4E0D,
