@@ -99,4 +99,15 @@ public class SanJiaoInputController: IMKInputController {
         if case .selecting(let buf, _, _) = state { return buf }
         return nil
     }
+
+    public override func menu() -> NSMenu! {
+        let m = NSMenu()
+        m.addItem(withTitle: "偏好設定…", action: #selector(openPrefs), keyEquivalent: "")
+        return m
+    }
+
+    @objc private func openPrefs() {
+        PreferencesWindow.shared.showWindow(nil)
+        NSApp.activate(ignoringOtherApps: true)
+    }
 }
