@@ -4,6 +4,9 @@ import PackageDescription
 let package = Package(
     name: "sanjiao-builder",
     platforms: [.macOS(.v26)],
+    products: [
+        .executable(name: "sanjiao-builder", targets: ["SanJiaoBuilder"]),
+    ],
     dependencies: [
         .package(path: "../../Packages/SanJiaoCore")
     ],
