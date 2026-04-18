@@ -2,7 +2,7 @@
 
 **日期**：2026-04-18
 **狀態**：草案（待實作）
-**目標平台**：macOS 13+（Ventura 起，假設值 — 見 §12）
+**目標平台**：macOS 26+（Tahoe 起）
 **授權**：MIT
 **專案目標**：在 macOS 上實作三角編號法輸入法，開源釋出。
 
@@ -307,4 +307,9 @@ v0.1 不做：
 
 ## 12. 開放議題
 
-1. **最低 macOS 版本**：暫定 13+（Ventura）。若需支援更低（如 12），`IMKCandidates` + SwiftUI 互通性需另行驗證。待使用者確認。
+無。所有決策已鎖定。
+
+### 附註：macOS 26 Tahoe 為最低目標帶來的影響
+- 可自由使用 Swift 6.x、Observation framework、最新 SwiftUI；無需 availability 分支。
+- `IMKCandidates` + SwiftUI 橋接於 Tahoe 已成熟，候選窗自訂 cell 不需回退方案。
+- 使用者基數較窄，但符合「開源早期採用者」目標族群。
