@@ -3,7 +3,7 @@ import Foundation
 public struct Composer: Sendable {
     public private(set) var state: ComposerState = .empty
     private let lexicon: Lexicon
-    private var ranker: Ranker?
+    private let ranker: Ranker?
     public let pageSize = 10
 
     public init(lexicon: Lexicon, ranker: Ranker? = nil) {
@@ -114,6 +114,11 @@ public struct Composer: Sendable {
             cands = lexicon.prefix(code: buffer)
         }
         if let r = ranker { cands = r.rank(cands, buffer: buffer) }
+        if cands.isEmpty {
+            // Spec §3.2: keep buffer, signal "no match", allow user to Backspace.
+            state = .composing(buffer: buffer)
+            return [.beep]
+        }
         state = .selecting(buffer: buffer, candidates: cands, page: 0)
         return []
     }
