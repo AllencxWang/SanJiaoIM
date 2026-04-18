@@ -1,0 +1,5 @@
+upstream: https://github.com/chinese-opendesktop/cin-tables
+path: 3corner.cin
+retrieved: 2026-04-18
+commit: ea28d61b50950b3738e3f401e5828478d303d0fe
+license: Public Domain (per file header)
