@@ -10,12 +10,14 @@
 		03154ED6A71FB550B457CD4E /* LexiconBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB132FC19641D5D6DF4E7B4D /* LexiconBootstrap.swift */; };
 		3401E5E87E8DC4C588CBA779 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E967F969BA88C3C8E0583B80 /* AppDelegate.swift */; };
 		A2C13F58F5A5EEBD7417074A /* SanJiaoCore in Frameworks */ = {isa = PBXBuildFile; productRef = C983CA8F67CC77647D94F1F1 /* SanJiaoCore */; };
+		EC660D2401BD76AEE4B4587E /* CandidatePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC210A5605F648CC30EEC82 /* CandidatePanel.swift */; };
 		F97FFF64C136FB9C46B728C1 /* SanJiaoInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDADA8DB0A76DB72A0289C6F /* SanJiaoInputController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		06EEE62DAE99243F06EEC49D /* SanJiaoCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SanJiaoCore; path = Packages/SanJiaoCore; sourceTree = SOURCE_ROOT; };
 		73E6EBA18C1FF7F2F5848EF6 /* SanJiaoIM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SanJiaoIM.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDC210A5605F648CC30EEC82 /* CandidatePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidatePanel.swift; sourceTree = "<group>"; };
 		DB132FC19641D5D6DF4E7B4D /* LexiconBootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexiconBootstrap.swift; sourceTree = "<group>"; };
 		DDADA8DB0A76DB72A0289C6F /* SanJiaoInputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SanJiaoInputController.swift; sourceTree = "<group>"; };
 		E967F969BA88C3C8E0583B80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -37,6 +39,7 @@
 			isa = PBXGroup;
 			children = (
 				E967F969BA88C3C8E0583B80 /* AppDelegate.swift */,
+				BDC210A5605F648CC30EEC82 /* CandidatePanel.swift */,
 				DB132FC19641D5D6DF4E7B4D /* LexiconBootstrap.swift */,
 				DDADA8DB0A76DB72A0289C6F /* SanJiaoInputController.swift */,
 			);
@@ -133,6 +136,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3401E5E87E8DC4C588CBA779 /* AppDelegate.swift in Sources */,
+				EC660D2401BD76AEE4B4587E /* CandidatePanel.swift in Sources */,
 				03154ED6A71FB550B457CD4E /* LexiconBootstrap.swift in Sources */,
 				F97FFF64C136FB9C46B728C1 /* SanJiaoInputController.swift in Sources */,
 			);

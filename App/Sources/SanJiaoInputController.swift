@@ -6,6 +6,7 @@ import os
 public class SanJiaoInputController: IMKInputController {
     private let log = Logger(subsystem: "com.sanjiaoim.app", category: "imkit")
     private var composer: Composer?
+    private lazy var panel = CandidatePanel()
 
     public override func activateServer(_ sender: Any!) {
         guard let lex = LexiconBootstrap.shared.lexicon,
@@ -69,6 +70,28 @@ public class SanJiaoInputController: IMKInputController {
             case .beep:
                 NSSound.beep()
             }
+        }
+
+        // Update marked text (composing buffer display)
+        if case .composing(let buf) = stateAfter {
+            let attr = NSAttributedString(string: buf,
+                attributes: [.foregroundColor: NSColor.secondaryLabelColor,
+                             .underlineStyle: NSUnderlineStyle.single.rawValue])
+            client.setMarkedText(attr,
+                selectionRange: NSRange(location: buf.count, length: 0),
+                replacementRange: NSRange(location: NSNotFound, length: 0))
+        } else {
+            client.setMarkedText("",
+                selectionRange: NSRange(location: 0, length: 0),
+                replacementRange: NSRange(location: NSNotFound, length: 0))
+        }
+
+        // Show/hide candidate panel
+        switch stateAfter {
+        case .selecting(let buf, let cands, _):
+            panel.show(buffer: buf, entries: cands)
+        case .empty, .composing:
+            panel.hide()
         }
     }
 
