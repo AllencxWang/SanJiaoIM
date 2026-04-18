@@ -20,7 +20,7 @@ public struct LoadedLexicon: Sendable {
 
 public enum LexiconReader {
     public static func load(url: URL) throws -> LoadedLexicon {
-        let data = try Data(contentsOf: url, options: .mappedIfSafe)
+        let data = try Data(contentsOf: url)
         return try load(data: data)
     }
 
@@ -43,6 +43,15 @@ public enum LexiconReader {
 
         try need(4)
         let count = Int(data.readLE(UInt32.self, at: cursor)); cursor += 4
+
+        // Defence: a crafted header declaring billions of entries would
+        // pre-allocate huge memory. Each entry is at least 12 bytes of fixed prefix
+        // plus at least 1 byte of UTF-8 char data.
+        let minBytesPerEntry = LexiconFormat.codeLength + 1 + 4 + 1 + 1
+        let remaining = data.count - cursor
+        guard count <= remaining / minBytesPerEntry else {
+            throw LexiconReaderError.truncated
+        }
 
         var entries: [CharEntry] = []
         entries.reserveCapacity(count)
@@ -83,7 +92,8 @@ extension Data {
     /// surprises).
     func readLE<T: FixedWidthInteger>(_ type: T.Type, at offset: Int) -> T {
         let size = MemoryLayout<T>.size
-        let slice = self.subdata(in: offset..<offset + size)
+        let base = self.startIndex + offset
+        let slice = self.subdata(in: base..<base + size)
         var value: T = 0
         for i in 0..<size {
             value |= T(slice[slice.startIndex + i]) << (8 * i)
