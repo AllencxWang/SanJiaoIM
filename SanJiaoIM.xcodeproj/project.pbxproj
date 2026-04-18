@@ -8,15 +8,30 @@
 
 /* Begin PBXBuildFile section */
 		03154ED6A71FB550B457CD4E /* LexiconBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB132FC19641D5D6DF4E7B4D /* LexiconBootstrap.swift */; };
+		28CE2CF8BD1453282CA1B86B /* SmokeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C029029D43AFCF55E67E2D /* SmokeTests.swift */; };
 		3401E5E87E8DC4C588CBA779 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E967F969BA88C3C8E0583B80 /* AppDelegate.swift */; };
 		9AF0A210C077CE8E8B35D8CA /* PreferencesWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BB5959C252F7FC23D216A8 /* PreferencesWindow.swift */; };
 		A2C13F58F5A5EEBD7417074A /* SanJiaoCore in Frameworks */ = {isa = PBXBuildFile; productRef = C983CA8F67CC77647D94F1F1 /* SanJiaoCore */; };
+		C4CA390A1C02208EFECD37D0 /* Lexicon.bin in Resources */ = {isa = PBXBuildFile; fileRef = 2E50AD8C79225EC0E2932201 /* Lexicon.bin */; };
 		EC660D2401BD76AEE4B4587E /* CandidatePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC210A5605F648CC30EEC82 /* CandidatePanel.swift */; };
 		F97FFF64C136FB9C46B728C1 /* SanJiaoInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDADA8DB0A76DB72A0289C6F /* SanJiaoInputController.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		DAA6F92F4FEBB4A8B75E0006 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1463A8C5303987FC4D83FA08 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6FFB9231BE0176A1132AD9D;
+			remoteInfo = SanJiaoIM;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		06EEE62DAE99243F06EEC49D /* SanJiaoCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SanJiaoCore; path = Packages/SanJiaoCore; sourceTree = SOURCE_ROOT; };
+		2D4DF939C36BEE69E0883EEE /* SanJiaoIMTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SanJiaoIMTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E50AD8C79225EC0E2932201 /* Lexicon.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = Lexicon.bin; sourceTree = "<group>"; };
+		71C029029D43AFCF55E67E2D /* SmokeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmokeTests.swift; sourceTree = "<group>"; };
 		73E6EBA18C1FF7F2F5848EF6 /* SanJiaoIM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SanJiaoIM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDC210A5605F648CC30EEC82 /* CandidatePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidatePanel.swift; sourceTree = "<group>"; };
 		D3BB5959C252F7FC23D216A8 /* PreferencesWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindow.swift; sourceTree = "<group>"; };
@@ -62,14 +77,34 @@
 			isa = PBXGroup;
 			children = (
 				73E6EBA18C1FF7F2F5848EF6 /* SanJiaoIM.app */,
+				2D4DF939C36BEE69E0883EEE /* SanJiaoIMTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F1ABD252FE2BA6B75B1E6B78 /* AppTests */ = {
+			isa = PBXGroup;
+			children = (
+				71C029029D43AFCF55E67E2D /* SmokeTests.swift */,
+			);
+			path = AppTests;
+			sourceTree = "<group>";
+		};
+		F80709DB426F2BE8029A7988 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2E50AD8C79225EC0E2932201 /* Lexicon.bin */,
+			);
+			name = Resources;
+			path = App/Resources;
 			sourceTree = "<group>";
 		};
 		F9C17324EED39AEE05B42A7C = {
 			isa = PBXGroup;
 			children = (
+				F1ABD252FE2BA6B75B1E6B78 /* AppTests */,
 				A0E7D96F58D552F2857A244C /* Packages */,
+				F80709DB426F2BE8029A7988 /* Resources */,
 				6012B3ED0B2182BF4A845E06 /* Sources */,
 				CA77D3729F28115E65F651EC /* Products */,
 			);
@@ -78,11 +113,30 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		27D9BCC89683C2A76AE2BA32 /* SanJiaoIMTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3423EECEF348D9F66B78F25F /* Build configuration list for PBXNativeTarget "SanJiaoIMTests" */;
+			buildPhases = (
+				81674BEB6781FE7FE17BA761 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0098C5FE1A39AFD6F7824809 /* PBXTargetDependency */,
+			);
+			name = SanJiaoIMTests;
+			packageProductDependencies = (
+			);
+			productName = SanJiaoIMTests;
+			productReference = 2D4DF939C36BEE69E0883EEE /* SanJiaoIMTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		E6FFB9231BE0176A1132AD9D /* SanJiaoIM */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4656FD267DCF04EEE0524E57 /* Build configuration list for PBXNativeTarget "SanJiaoIM" */;
 			buildPhases = (
 				C57D7DCE84A131C50BF90610 /* Sources */,
+				39F771844DEA4DD0FCC5D506 /* Resources */,
 				6E28CBC272F082FD3435E6CD /* Frameworks */,
 			);
 			buildRules = (
@@ -106,6 +160,9 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					27D9BCC89683C2A76AE2BA32 = {
+						ProvisioningStyle = Manual;
+					};
 					E6FFB9231BE0176A1132AD9D = {
 						ProvisioningStyle = Manual;
 					};
@@ -129,11 +186,31 @@
 			projectRoot = "";
 			targets = (
 				E6FFB9231BE0176A1132AD9D /* SanJiaoIM */,
+				27D9BCC89683C2A76AE2BA32 /* SanJiaoIMTests */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		39F771844DEA4DD0FCC5D506 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4CA390A1C02208EFECD37D0 /* Lexicon.bin in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		81674BEB6781FE7FE17BA761 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28CE2CF8BD1453282CA1B86B /* SmokeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C57D7DCE84A131C50BF90610 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -147,6 +224,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0098C5FE1A39AFD6F7824809 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6FFB9231BE0176A1132AD9D /* SanJiaoIM */;
+			targetProxy = DAA6F92F4FEBB4A8B75E0006 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		3C4ACE6A1CCFB00095751E3A /* Release */ = {
@@ -176,6 +261,22 @@
 					"@executable_path/../Frameworks",
 				);
 				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		9770CDA0B5BDC6826B485563 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SanJiaoIM.app/Contents/MacOS/SanJiaoIM";
 			};
 			name = Debug;
 		};
@@ -304,6 +405,22 @@
 			};
 			name = Release;
 		};
+		F723B168232F32329D617352 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SanJiaoIM.app/Contents/MacOS/SanJiaoIM";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -312,6 +429,15 @@
 			buildConfigurations = (
 				ACB4B4769024F9B401767C09 /* Debug */,
 				CEE65E35EEBAFECBC4384CA1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		3423EECEF348D9F66B78F25F /* Build configuration list for PBXNativeTarget "SanJiaoIMTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9770CDA0B5BDC6826B485563 /* Debug */,
+				F723B168232F32329D617352 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

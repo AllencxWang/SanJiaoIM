@@ -18,8 +18,8 @@ targets:
     platform: macOS
     sources:
       - App/Sources
-    resources:
-      - App/Resources
+      - path: App/Resources/Lexicon.bin
+        buildPhase: resources
     dependencies:
       - package: SanJiaoCore
     info:
@@ -37,3 +37,21 @@ targets:
       path: App/SanJiaoIM.entitlements
       properties:
         com.apple.security.app-sandbox: false
+  SanJiaoIMTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - AppTests
+    dependencies:
+      - target: SanJiaoIM
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  SanJiaoIM:
+    build:
+      targets:
+        SanJiaoIM: all
+        SanJiaoIMTests: [test]
+    test:
+      targets: [SanJiaoIMTests]
