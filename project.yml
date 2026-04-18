@@ -1,0 +1,39 @@
+name: SanJiaoIM
+options:
+  minimumXcodeGenVersion: 2.38.0
+  deploymentTarget:
+    macOS: "26.0"
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    PRODUCT_BUNDLE_IDENTIFIER: com.sanjiaoim.app
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_STYLE: Manual
+packages:
+  SanJiaoCore:
+    path: Packages/SanJiaoCore
+targets:
+  SanJiaoIM:
+    type: application
+    platform: macOS
+    sources:
+      - App/Sources
+    resources:
+      - App/Resources
+    dependencies:
+      - package: SanJiaoCore
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: SanJiaoIM
+        LSBackgroundOnly: true
+        LSUIElement: true
+        InputMethodConnectionName: SanJiaoIM_1_Connection
+        InputMethodServerControllerClass: SanJiaoIM.SanJiaoInputController
+        tsInputMethodCharacterRepertoireKey:
+          - zh-Hant
+          - zh-Hans
+    entitlements:
+      path: App/SanJiaoIM.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
