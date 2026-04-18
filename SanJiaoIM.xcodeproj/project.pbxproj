@@ -10,6 +10,7 @@
 		03154ED6A71FB550B457CD4E /* LexiconBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB132FC19641D5D6DF4E7B4D /* LexiconBootstrap.swift */; };
 		28CE2CF8BD1453282CA1B86B /* SmokeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C029029D43AFCF55E67E2D /* SmokeTests.swift */; };
 		3401E5E87E8DC4C588CBA779 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E967F969BA88C3C8E0583B80 /* AppDelegate.swift */; };
+		60A3518E33DC63B967A8AB38 /* StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EEA56199B9B9701ABDD9F /* StatusBar.swift */; };
 		9AF0A210C077CE8E8B35D8CA /* PreferencesWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BB5959C252F7FC23D216A8 /* PreferencesWindow.swift */; };
 		A2C13F58F5A5EEBD7417074A /* SanJiaoCore in Frameworks */ = {isa = PBXBuildFile; productRef = C983CA8F67CC77647D94F1F1 /* SanJiaoCore */; };
 		C4CA390A1C02208EFECD37D0 /* Lexicon.bin in Resources */ = {isa = PBXBuildFile; fileRef = 2E50AD8C79225EC0E2932201 /* Lexicon.bin */; };
@@ -31,6 +32,7 @@
 		06EEE62DAE99243F06EEC49D /* SanJiaoCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SanJiaoCore; path = Packages/SanJiaoCore; sourceTree = SOURCE_ROOT; };
 		2D4DF939C36BEE69E0883EEE /* SanJiaoIMTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SanJiaoIMTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E50AD8C79225EC0E2932201 /* Lexicon.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = Lexicon.bin; sourceTree = "<group>"; };
+		402EEA56199B9B9701ABDD9F /* StatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBar.swift; sourceTree = "<group>"; };
 		71C029029D43AFCF55E67E2D /* SmokeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmokeTests.swift; sourceTree = "<group>"; };
 		73E6EBA18C1FF7F2F5848EF6 /* SanJiaoIM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SanJiaoIM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDC210A5605F648CC30EEC82 /* CandidatePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidatePanel.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 				DB132FC19641D5D6DF4E7B4D /* LexiconBootstrap.swift */,
 				D3BB5959C252F7FC23D216A8 /* PreferencesWindow.swift */,
 				DDADA8DB0A76DB72A0289C6F /* SanJiaoInputController.swift */,
+				402EEA56199B9B9701ABDD9F /* StatusBar.swift */,
 			);
 			name = Sources;
 			path = App/Sources;
@@ -220,6 +223,7 @@
 				03154ED6A71FB550B457CD4E /* LexiconBootstrap.swift in Sources */,
 				9AF0A210C077CE8E8B35D8CA /* PreferencesWindow.swift in Sources */,
 				F97FFF64C136FB9C46B728C1 /* SanJiaoInputController.swift in Sources */,
+				60A3518E33DC63B967A8AB38 /* StatusBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -18,6 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             try LexiconBootstrap.shared.loadOrThrow()
         } catch {
             log.fault("bootstrap failed: \(String(describing: error))")
+            StatusBar.showError("Lexicon.bin 缺失或損毀，請重裝")
         }
         let name = Bundle.main.infoDictionary?["InputMethodConnectionName"] as? String
             ?? "SanJiaoIM_1_Connection"
