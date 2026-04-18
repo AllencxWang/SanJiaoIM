@@ -22,11 +22,11 @@ public enum LexiconWriter {
         var grouped: [(code: String, indices: [Int])] = []
         var firstByCode: [String: Int] = [:]
         for (i, e) in entries.enumerated() {
-            if firstByCode[e.code] == nil {
+            if let idx = firstByCode[e.code] {
+                grouped[idx].indices.append(i)
+            } else {
                 firstByCode[e.code] = grouped.count
                 grouped.append((e.code, [i]))
-            } else {
-                grouped[firstByCode[e.code]!].indices.append(i)
             }
         }
 
