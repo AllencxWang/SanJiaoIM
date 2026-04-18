@@ -9,6 +9,7 @@ let package = Package(
     ],
     targets: [
         .executableTarget(name: "SanJiaoBuilder", dependencies: ["SanJiaoCore"]),
-        .testTarget(name: "SanJiaoBuilderTests", dependencies: ["SanJiaoBuilder"]),
+        .testTarget(name: "SanJiaoBuilderTests", dependencies: ["SanJiaoBuilder"],
+                    resources: [.copy("Fixtures")]),
     ]
 )

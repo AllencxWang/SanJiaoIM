@@ -1,0 +1,13 @@
+# mini test CIN
+%ename Mini
+%selkey 1234567890
+%keyname begin
+0 0
+1 1
+%keyname end
+%chardef begin
+100301 一
+100302 丁
+100302 七
+999978 鬵
+%chardef end
