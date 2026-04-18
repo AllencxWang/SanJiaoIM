@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
+
+# Lexicon build artifact (regenerated from Vendor/3corner.cin)
+App/Resources/Lexicon.bin
+
+# User data
+*.corrupt.bak
