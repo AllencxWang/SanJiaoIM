@@ -62,8 +62,9 @@ public struct FrequencyStore: Sendable {
         pendingBumps = 0
     }
 
-    public mutating func reset() {
+    public mutating func reset() throws {
         stats.removeAll()
-        try? flush()
+        pendingBumps = 0
+        try flush()
     }
 }
