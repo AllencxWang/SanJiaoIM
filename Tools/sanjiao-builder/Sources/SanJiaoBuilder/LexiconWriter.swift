@@ -6,29 +6,30 @@ public enum LexiconWriterError: Error {
     case characterEncodingFailed(String)
 }
 
+// The CLI reports failures via `localizedDescription` — carry the payload.
+extension LexiconWriterError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .invalidCodeLength(let code):
+            return "entry code \"\(code)\" is not \(LexiconFormat.codeLength) digits"
+        case .characterEncodingFailed(let char):
+            return "cannot encode character \"\(char)\" as UTF-8"
+        }
+    }
+}
+
 public enum LexiconWriter {
     /// Binary layout:
     ///   magic (4) | version (u16) | entryCount (u32)
     ///   entries: [ codeBytes(6) | layer(u8) | ordinal(u32) | charLen(u8) | charUTF8(var) ]
-    ///   index: [ codeBytes(6) | firstEntryIndex(u32) | entryCount(u16) ]  sorted by code
-    ///   indexCount (u32) at EOF
+    ///
+    /// The code → entries index is rebuilt by LexiconReader at load time, so
+    /// none is written.
     public static func serialize(entries: [CharEntry]) throws -> Data {
         var data = Data()
         data.append(contentsOf: LexiconFormat.magic)
         data.append(contentsOf: UInt16(LexiconFormat.version).littleEndianBytes)
         data.append(contentsOf: UInt32(entries.count).littleEndianBytes)
-
-        // Group entries by code (preserve input order within a group).
-        var grouped: [(code: String, indices: [Int])] = []
-        var firstByCode: [String: Int] = [:]
-        for (i, e) in entries.enumerated() {
-            if let idx = firstByCode[e.code] {
-                grouped[idx].indices.append(i)
-            } else {
-                firstByCode[e.code] = grouped.count
-                grouped.append((e.code, [i]))
-            }
-        }
 
         // Write entries in original order (so ordinals match file position).
         for entry in entries {
@@ -44,15 +45,6 @@ public enum LexiconWriter {
             data.append(UInt8(utf8.count))
             data.append(utf8)
         }
-
-        // Sorted index.
-        let sorted = grouped.sorted { $0.code < $1.code }
-        for (code, indices) in sorted {
-            data.append(contentsOf: Array(code.utf8))
-            data.append(contentsOf: UInt32(indices.first!).littleEndianBytes)
-            data.append(contentsOf: UInt16(indices.count).littleEndianBytes)
-        }
-        data.append(contentsOf: UInt32(sorted.count).littleEndianBytes)
         return data
     }
 }

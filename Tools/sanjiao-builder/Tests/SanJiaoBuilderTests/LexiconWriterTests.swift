@@ -50,37 +50,8 @@ final class LexiconWriterTests: XCTestCase {
         XCTAssertEqual(Array(data[30..<34]), [0x01, 0x00, 0x00, 0x00])
         XCTAssertEqual(data[34], 1)
         XCTAssertEqual(Array(data[35..<36]), Array("B".utf8))
-        // Index section starts at 36. Two unique codes, sorted.
-        // Slot 0: "100301" (6B) + firstEntryIndex u32 LE (0) + entryCount u16 LE (1)
-        XCTAssertEqual(Array(data[36..<42]), Array("100301".utf8))
-        XCTAssertEqual(Array(data[42..<46]), [0x00, 0x00, 0x00, 0x00])
-        XCTAssertEqual(Array(data[46..<48]), [0x01, 0x00])
-        // Slot 1: "100302" + firstEntryIndex 1 + entryCount 1
-        XCTAssertEqual(Array(data[48..<54]), Array("100302".utf8))
-        XCTAssertEqual(Array(data[54..<58]), [0x01, 0x00, 0x00, 0x00])
-        XCTAssertEqual(Array(data[58..<60]), [0x01, 0x00])
-        // Trailer: indexCount u32 LE = 2
-        XCTAssertEqual(Array(data[60..<64]), [0x02, 0x00, 0x00, 0x00])
-        XCTAssertEqual(data.count, 64)
-    }
-
-    func testDuplicateCodeGroupsInIndex() throws {
-        let entries = [
-            CharEntry(code: "100302", character: "A", layer: .big5F, ordinal: 0),
-            CharEntry(code: "100301", character: "B", layer: .big5F, ordinal: 1),
-            CharEntry(code: "100302", character: "C", layer: .big5F, ordinal: 2),
-        ]
-        let data = try LexiconWriter.serialize(entries: entries)
-        // 3 entries × (6+1+4+1+1) = 39; header 10; index 2 slots × 12 = 24; trailer 4
-        // Total = 10 + 39 + 24 + 4 = 77
-        XCTAssertEqual(data.count, 77)
-        // Sorted index: 100301 first (firstIdx=1, count=1), then 100302 (firstIdx=0, count=2)
-        let indexStart = 10 + 39 // 49
-        XCTAssertEqual(Array(data[indexStart..<indexStart+6]), Array("100301".utf8))
-        XCTAssertEqual(Array(data[(indexStart+6)..<(indexStart+10)]), [0x01, 0x00, 0x00, 0x00])
-        XCTAssertEqual(Array(data[(indexStart+10)..<(indexStart+12)]), [0x01, 0x00])
-        XCTAssertEqual(Array(data[(indexStart+12)..<(indexStart+18)]), Array("100302".utf8))
-        XCTAssertEqual(Array(data[(indexStart+18)..<(indexStart+22)]), [0x00, 0x00, 0x00, 0x00])
-        XCTAssertEqual(Array(data[(indexStart+22)..<(indexStart+24)]), [0x02, 0x00])
+        // The file ends after the entries — the reader builds its own index,
+        // so no index section is written.
+        XCTAssertEqual(data.count, 36)
     }
 }

@@ -6,17 +6,9 @@ import Foundation
 /// Regenerate via: `Tools/sanjiao-builder/scripts/generate-big5-level1.py`.
 enum Big5Level1 {
     static func contains(_ v: UInt32) -> Bool {
-        _table.withUnsafeBufferPointer { buf in
-            var lo = 0, hi = buf.count - 1
-            while lo <= hi {
-                let m = (lo + hi) / 2
-                if buf[m] == v { return true }
-                if buf[m] < v { lo = m + 1 } else { hi = m - 1 }
-            }
-            return false
-        }
+        _table.contains(v)
     }
 
     /// Populated by one-off bootstrap script.
-    static let _table: [UInt32] = Big5Level1Table.values
+    static let _table: Set<UInt32> = Set(Big5Level1Table.values)
 }

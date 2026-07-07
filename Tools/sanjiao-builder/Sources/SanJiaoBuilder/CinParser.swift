@@ -1,4 +1,5 @@
 import Foundation
+import SanJiaoCore
 
 public struct RawChardef: Equatable, Sendable {
     public let code: String
@@ -10,6 +11,22 @@ public enum CinParserError: Error, Equatable {
     case malformedLine(line: Int, content: String)
     case missingChardefSection
     case ioError(String)
+}
+
+// The CLI reports failures via `localizedDescription` — carry the payload.
+extension CinParserError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .invalidCodeLength(let line, let code):
+            return "line \(line): code \"\(code)\" is not \(LexiconFormat.codeLength) digits"
+        case .malformedLine(let line, let content):
+            return "line \(line): malformed chardef line \"\(content)\""
+        case .missingChardefSection:
+            return "no %chardef section found in .cin file"
+        case .ioError(let detail):
+            return "cannot read .cin file: \(detail)"
+        }
+    }
 }
 
 public enum CinParser {
@@ -49,7 +66,8 @@ public enum CinParser {
             guard !char.isEmpty else {
                 throw CinParserError.malformedLine(line: idx + 1, content: String(line))
             }
-            guard code.count == 6, code.allSatisfy(\.isASCII), code.allSatisfy(\.isNumber) else {
+            guard code.count == LexiconFormat.codeLength,
+                  code.allSatisfy(\.isASCII), code.allSatisfy(\.isNumber) else {
                 throw CinParserError.invalidCodeLength(line: idx + 1, code: code)
             }
             results.append(RawChardef(code: code, character: char))
