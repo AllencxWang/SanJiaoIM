@@ -2,13 +2,14 @@ import Cocoa
 import SanJiaoCore
 
 final class PreferencesWindow: NSWindowController {
-    static let shared = PreferencesWindow(
-        window: NSWindow(contentRect: NSRect(x: 0, y: 0, width: 360, height: 200),
-                         styleMask: [.titled, .closable],
-                         backing: .buffered, defer: false))
+    static let shared = PreferencesWindow()
 
-    override func windowDidLoad() {
-        super.windowDidLoad()
+    // windowDidLoad() only fires on the nib-loading path; for a programmatically
+    // created window the UI must be built in the initializer.
+    private convenience init() {
+        self.init(window: NSWindow(contentRect: NSRect(x: 0, y: 0, width: 360, height: 200),
+                                   styleMask: [.titled, .closable],
+                                   backing: .buffered, defer: false))
         window?.title = "SanJiaoIM 偏好設定"
         let view = window!.contentView!
         let button = NSButton(title: "清除學習紀錄", target: self, action: #selector(clear))

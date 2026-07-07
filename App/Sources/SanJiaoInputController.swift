@@ -6,7 +6,6 @@ import os
 public class SanJiaoInputController: IMKInputController {
     private let log = Logger(subsystem: "com.sanjiaoim.app", category: "imkit")
     private var composer: Composer?
-    private lazy var panel = CandidatePanel()
 
     public override func activateServer(_ sender: Any!) {
         guard let lex = LexiconBootstrap.shared.lexicon,
@@ -17,15 +16,24 @@ public class SanJiaoInputController: IMKInputController {
 
     public override func deactivateServer(_ sender: Any!) {
         self.composer = nil
+        // Input-method processes are often killed without a terminate callback;
+        // persist any pending (< flushEvery) learning now.
+        try? LexiconBootstrap.shared.store?.flush()
     }
 
     public override func handle(_ event: NSEvent!, client sender: Any!) -> Bool {
         guard event.type == .keyDown, var c = composer else { return false }
-        let stateBefore = c.state
-        let evt = translate(event, stateBefore: stateBefore)
+        let isModified = !event.modifierFlags
+            .intersection([.command, .control, .option])
+            .isEmpty
+        guard let evt = KeyTranslator.translate(text: event.charactersIgnoringModifiers,
+                                                isModified: isModified,
+                                                state: c.state) else {
+            return false
+        }
         let effects = c.handle(evt)
         self.composer = c
-        apply(effects: effects, client: sender, stateBefore: stateBefore, stateAfter: c.state)
+        apply(effects: effects, composer: c, client: sender)
         switch c.state {
         case .empty:
             return !effects.contains { if case .passthrough = $0 { return true } else { return false } }
@@ -34,36 +42,25 @@ public class SanJiaoInputController: IMKInputController {
         }
     }
 
-    private func translate(_ event: NSEvent, stateBefore: ComposerState) -> ComposerEvent {
-        let s = event.charactersIgnoringModifiers ?? ""
-        guard let ch = s.first else { return .passthrough(" ") }
-        switch ch {
-        case "0"..."9":
-            if case .selecting = stateBefore {
-                // in selecting mode digits mean pick; '0' means 10th
-                let n = Int(String(ch))!
-                return .pick(n == 0 ? 10 : n)
-            }
-            return .digit(ch)
-        case " ":              return .space
-        case "\r", "\n":       return .enter
-        case "\u{7F}", "\u{08}": return .backspace
-        case "\u{1B}":         return .escape
-        case ",":              return .prevPage
-        case ".":              return .nextPage
-        default:               return .passthrough(ch)
-        }
+    /// Mouse selection in the IMKCandidates panel.
+    public override func candidateSelected(_ candidateString: NSAttributedString!) {
+        guard var c = composer, let text = candidateString?.string else { return }
+        let effects = c.handle(.pickCharacter(text))
+        self.composer = c
+        apply(effects: effects, composer: c, client: client())
     }
 
-    private func apply(effects: [ComposerEffect], client: Any!, stateBefore: ComposerState, stateAfter: ComposerState) {
+    private func apply(effects: [ComposerEffect], composer: Composer, client: Any!) {
         guard let client = client as? IMKTextInput else { return }
         for fx in effects {
             switch fx {
-            case .commit(let text):
-                client.insertText(text, replacementRange: NSRange(location: NSNotFound, length: 0))
-                if let code = currentCode(state: stateBefore),
-                   let store = LexiconBootstrap.shared.store {
-                    store.bump(code: code, character: text)
+            case .commit(let entry):
+                client.insertText(entry.character, replacementRange: NSRange(location: NSNotFound, length: 0))
+                // Learning is keyed by the entry's full 6-digit code — the same
+                // key Ranker.score queries — never by the (possibly partial)
+                // typed buffer.
+                if let store = LexiconBootstrap.shared.store {
+                    store.bump(code: entry.code, character: entry.character)
                 }
             case .passthrough:
                 break // we return false from handle() so system delivers it
@@ -71,9 +68,11 @@ public class SanJiaoInputController: IMKInputController {
                 NSSound.beep()
             }
         }
+        let stateAfter = composer.state
 
-        // Update marked text (composing buffer display)
-        if case .composing(let buf) = stateAfter {
+        // Update marked text — the typed code stays visible while composing
+        // AND while the candidate window is open.
+        if let buf = stateAfter.displayBuffer {
             let attr = NSAttributedString(string: buf,
                 attributes: [.foregroundColor: NSColor.secondaryLabelColor,
                              .underlineStyle: NSUnderlineStyle.single.rawValue])
@@ -86,18 +85,19 @@ public class SanJiaoInputController: IMKInputController {
                 replacementRange: NSRange(location: NSNotFound, length: 0))
         }
 
-        // Show/hide candidate panel
-        switch stateAfter {
-        case .selecting(let buf, let cands, _):
-            panel.show(buffer: buf, entries: cands)
-        case .empty, .composing:
-            panel.hide()
+        // Show/hide candidate panel. Only the current page is handed over, so
+        // the panel's numbering always matches the composer's .pick indexing.
+        // IMKit delivers events on the main thread; assumeIsolated makes that
+        // contract explicit for the MainActor-bound panel.
+        let visible = composer.visibleCandidates
+        MainActor.assumeIsolated {
+            switch stateAfter {
+            case .selecting:
+                CandidatePanel.shared.show(entries: visible)
+            case .empty, .composing:
+                CandidatePanel.shared.hide()
+            }
         }
-    }
-
-    private func currentCode(state: ComposerState) -> String? {
-        if case .selecting(let buf, _, _) = state { return buf }
-        return nil
     }
 
     public override func menu() -> NSMenu! {
@@ -107,7 +107,9 @@ public class SanJiaoInputController: IMKInputController {
     }
 
     @objc private func openPrefs() {
-        PreferencesWindow.shared.showWindow(nil)
-        NSApp.activate(ignoringOtherApps: true)
+        MainActor.assumeIsolated {
+            PreferencesWindow.shared.showWindow(nil)
+            NSApp.activate(ignoringOtherApps: true)
+        }
     }
 }
