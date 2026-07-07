@@ -12,8 +12,10 @@ public struct Ranker: Sendable {
     }
 
     public func rank(_ entries: [CharEntry], buffer: String, now: Date = .now) -> [CharEntry] {
+        // One synchronized batch read instead of two store round trips per entry.
+        let stats = frequencies.stats(for: entries)
         let scored: [(Int, CharEntry, Double)] = entries.enumerated().map { pair in
-            (pair.offset, pair.element, score(pair.element, now: now))
+            (pair.offset, pair.element, score(pair.element, stats: stats[pair.offset], now: now))
         }
         let sorted = scored.sorted { a, b in
             if a.2 != b.2 { return a.2 < b.2 }
@@ -22,11 +24,11 @@ public struct Ranker: Sendable {
         return sorted.map { $0.1 }
     }
 
-    private func score(_ e: CharEntry, now: Date) -> Double {
+    private func score(_ e: CharEntry, stats: FrequencyStore.Stats?, now: Date) -> Double {
         var s = Double(e.layer.rawValue) * 100_000 + Double(e.ordinal)
-        let freq = frequencies.count(code: e.code, character: e.character)
+        let freq = stats?.count ?? 0
         s -= alpha * log(1.0 + Double(freq))
-        if let last = frequencies.lastUsed(code: e.code, character: e.character) {
+        if let last = stats?.lastUsed {
             let days = now.timeIntervalSince(last) / 86_400.0
             s += beta * max(0, days)
         }

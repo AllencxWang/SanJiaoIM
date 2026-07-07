@@ -45,6 +45,14 @@ public final class FrequencyStore: @unchecked Sendable {
         }
     }
 
+    /// Batch lookup — one synchronized pass for a whole candidate list, instead
+    /// of two queue round trips per candidate on the key-press hot path.
+    public func stats(for entries: [CharEntry]) -> [Stats?] {
+        queue.sync {
+            entries.map { stats[Self.key(code: $0.code, character: $0.character)] }
+        }
+    }
+
     public func bump(code: String, character: String, now: Date = .now) {
         queue.sync {
             let k = Self.key(code: code, character: character)
