@@ -15,6 +15,7 @@
 		A2C13F58F5A5EEBD7417074A /* SanJiaoCore in Frameworks */ = {isa = PBXBuildFile; productRef = C983CA8F67CC77647D94F1F1 /* SanJiaoCore */; };
 		C4CA390A1C02208EFECD37D0 /* Lexicon.bin in Resources */ = {isa = PBXBuildFile; fileRef = 2E50AD8C79225EC0E2932201 /* Lexicon.bin */; };
 		EC660D2401BD76AEE4B4587E /* CandidatePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC210A5605F648CC30EEC82 /* CandidatePanel.swift */; };
+		F5ABA20E169B57017045B15E /* CandidatePanelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9648846114B165016F6FFE /* CandidatePanelTests.swift */; };
 		F97FFF64C136FB9C46B728C1 /* SanJiaoInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDADA8DB0A76DB72A0289C6F /* SanJiaoInputController.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,7 @@
 		DB132FC19641D5D6DF4E7B4D /* LexiconBootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LexiconBootstrap.swift; sourceTree = "<group>"; };
 		DDADA8DB0A76DB72A0289C6F /* SanJiaoInputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SanJiaoInputController.swift; sourceTree = "<group>"; };
 		E967F969BA88C3C8E0583B80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FE9648846114B165016F6FFE /* CandidatePanelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidatePanelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 		F1ABD252FE2BA6B75B1E6B78 /* AppTests */ = {
 			isa = PBXGroup;
 			children = (
+				FE9648846114B165016F6FFE /* CandidatePanelTests.swift */,
 				71C029029D43AFCF55E67E2D /* SmokeTests.swift */,
 			);
 			path = AppTests;
@@ -210,6 +213,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5ABA20E169B57017045B15E /* CandidatePanelTests.swift in Sources */,
 				28CE2CF8BD1453282CA1B86B /* SmokeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
