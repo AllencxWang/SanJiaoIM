@@ -7,7 +7,7 @@ macOS 26 Tahoe+ 上的三角編號法（三角編號, Three-Corner Code）輸入
 需求：macOS 26 Tahoe+，Xcode 16+（含 Swift 6.2 toolchain），`xcodegen`。
 
 ```bash
-git clone https://github.com/<your-username>/SanJiaoIM.git
+git clone https://github.com/AllencxWang/SanJiaoIM.git
 cd SanJiaoIM
 ./scripts/install-dev.sh
 ```
