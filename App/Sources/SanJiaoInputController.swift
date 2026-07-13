@@ -52,51 +52,42 @@ public class SanJiaoInputController: IMKInputController {
 
     private func apply(effects: [ComposerEffect], composer: Composer, client: Any!) {
         guard let client = client as? IMKTextInput else { return }
-        for fx in effects {
-            switch fx {
-            case .commit(let entry):
-                client.insertText(entry.character, replacementRange: NSRange(location: NSNotFound, length: 0))
-                // Learning is keyed by the entry's full 6-digit code — the same
-                // key Ranker.score queries — never by the (possibly partial)
-                // typed buffer.
-                if let store = LexiconBootstrap.shared.store {
-                    store.bump(code: entry.code, character: entry.character)
-                }
-            case .passthrough:
-                break // we return false from handle() so system delivers it
-            case .beep:
-                NSSound.beep()
-            }
+        // IMKit delivers events on the main thread; assumeIsolated makes that
+        // contract explicit for the MainActor-bound panel and applicator.
+        MainActor.assumeIsolated {
+            let applicator = EffectApplicator(
+                text: TextInputAdapter(client: client),
+                candidates: CandidatePanel.shared,
+                onCommit: { entry in
+                    LexiconBootstrap.shared.store?.bump(code: entry.code, character: entry.character)
+                },
+                beep: { NSSound.beep() })
+            applicator.apply(effects: effects,
+                             state: composer.state,
+                             visibleCandidates: composer.visibleCandidates)
         }
-        let stateAfter = composer.state
+    }
 
-        // Update marked text — the typed code stays visible while composing
-        // AND while the candidate window is open.
-        if let buf = stateAfter.displayBuffer {
-            let attr = NSAttributedString(string: buf,
-                attributes: [.foregroundColor: NSColor.secondaryLabelColor,
-                             .underlineStyle: NSUnderlineStyle.single.rawValue])
-            client.setMarkedText(attr,
-                selectionRange: NSRange(location: buf.count, length: 0),
+    /// Bridges the live IMKTextInput client to the testable TextClient seam.
+    @MainActor
+    private struct TextInputAdapter: TextClient {
+        let client: IMKTextInput
+
+        func insertText(_ text: String) {
+            client.insertText(text,
                 replacementRange: NSRange(location: NSNotFound, length: 0))
-        } else {
+        }
+
+        func setMarkedText(_ text: NSAttributedString, selectionRange: NSRange) {
+            client.setMarkedText(text,
+                selectionRange: selectionRange,
+                replacementRange: NSRange(location: NSNotFound, length: 0))
+        }
+
+        func clearMarkedText() {
             client.setMarkedText("",
                 selectionRange: NSRange(location: 0, length: 0),
                 replacementRange: NSRange(location: NSNotFound, length: 0))
-        }
-
-        // Show/hide candidate panel. Only the current page is handed over, so
-        // the panel's numbering always matches the composer's .pick indexing.
-        // IMKit delivers events on the main thread; assumeIsolated makes that
-        // contract explicit for the MainActor-bound panel.
-        let visible = composer.visibleCandidates
-        MainActor.assumeIsolated {
-            switch stateAfter {
-            case .selecting:
-                CandidatePanel.shared.show(entries: visible)
-            case .empty, .composing:
-                CandidatePanel.shared.hide()
-            }
         }
     }
 

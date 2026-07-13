@@ -4,7 +4,7 @@ import SanJiaoCore
 import os
 
 @MainActor
-final class CandidatePanel {
+final class CandidatePanel: CandidateUI {
     /// One candidates window per IME server — shared across input controllers.
     static let shared = CandidatePanel(server: AppDelegate.shared?.server)
 
